@@ -35,8 +35,10 @@ export function setClass(el, classe) {
 
 
 
-export function Card({ title = '', image = '', description = '', tags = [], }) {
+export function Card({ title = '', image = '', description = '', tags = [], author = '', deleteFunction = () => { }, updateFunction = () => { }, onChange = () => { } }) {
     console.log(tags)
+
+
 
 
 
@@ -52,12 +54,18 @@ export function Card({ title = '', image = '', description = '', tags = [], }) {
             <div className={style.card_body}>
                 <div className={style.title}>
                     <h3>{title}</h3>
+                    <form action="">
+                        <input type="text" name="title" value={title} onChange={onChange} />
+                        <input type="submit" value="Aggiorna" onSubmit={updateFunction} />
+                    </form>
                 </div>
                 {tags.length ? <div>{tags.map((tag, i) => <span key={i} className={setClass(tag_css, tag)}>{tag}</span>)}</div> : <div>Nessun tag </div>}
                 <p className={style.description}>
                     {description}
                 </p>
+                <div className={style.author}>{`Autore: ${author}`}</div>
                 <Button />
+                <button onClick={deleteFunction}>elimina</button>
 
             </div>
         </div>
