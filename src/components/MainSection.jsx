@@ -13,7 +13,7 @@ function filtraTagUnici(array) {
     return array.filter((el, i) => array.indexOf(el) === i);
 }
 
-console.log(filtraTagUnici(postsTags))
+// console.log(filtraTagUnici(postsTags))
 
 
 export default function MainSection() {
@@ -54,18 +54,10 @@ export default function MainSection() {
     }
 
 
-    function updateTitle(post) {
+    function updateTitle(cardtitle, id) {
 
-        currentPost = posts.find(post)
-
-        currentPost = {
-            title: newTitle
-        }
-
-        setPosts([...posts]);
-        setTitle('');
-
-
+        setPosts((oldPosts) => oldPosts.map((post) => post.id === id ? { ...post, title: cardtitle } : post))
+        console.log(posts)
 
     }
 
@@ -92,7 +84,7 @@ export default function MainSection() {
                         {posts.map((post) => (
                             post.published &&
                             <div key={post.id} className="col_4">
-                                <Card title={post.title} image={post.image} description={post.content} tags={post.tags} author={post.author} deleteFunction={() => deletePost(post)} updateFunction={() => updateTitle(post)} onChange={(e) => setTitle(e.target.value)} />
+                                <Card id={post.id} title={post.title} image={post.image} description={post.content} tags={post.tags} author={post.author} deleteFunction={() => deletePost(post)} onUpdateTitle={updateTitle} />
                             </div>
                         ))}
 

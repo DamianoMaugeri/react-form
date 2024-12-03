@@ -1,6 +1,7 @@
 
 import style from './Card.module.css'
 import Button from './Button'
+import { useState } from 'react';
 
 const placeHolderSrc = 'https://picsum.photos/1200/1000'
 
@@ -35,13 +36,30 @@ export function setClass(el, classe) {
 
 
 
-export function Card({ title = '', image = '', description = '', tags = [], author = '', deleteFunction = () => { }, updateFunction = () => { }, onChange = () => { } }) {
-    console.log(tags)
+export function Card({ id = '', title = '', image = '', description = '', tags = [], author = '', deleteFunction = () => { }, onUpdateTitle = () => { } }) {
+    // console.log(tags)
+
+
+    const [cardtitle, setCardTitle] = useState(title)
+
+    const [isActive, setIsActive] = useState(false)
 
 
 
+    function updateCardTitle(e) {
+        e.preventDefault();
+        if (cardtitle.trim()) {
+            onUpdateTitle(cardtitle, id);
+            setCardTitle(cardtitle);
+            toggleActive()
+
+        }
+    };
 
 
+    function toggleActive() {
+        setIsActive(!isActive)
+    };
 
 
     return (
@@ -53,11 +71,14 @@ export function Card({ title = '', image = '', description = '', tags = [], auth
             </div>
             <div className={style.card_body}>
                 <div className={style.title}>
-                    <h3>{title}</h3>
-                    <form action="">
-                        <input type="text" name="title" value={title} onChange={onChange} />
-                        <input type="submit" value="Aggiorna" onSubmit={updateFunction} />
-                    </form>
+                    {!isActive ?
+                        <h3 className={''} onClick={toggleActive}>{cardtitle}</h3> :
+                        <form action="" onSubmit={updateCardTitle} className={''}>
+                            <input type="text" name="title" value={cardtitle} onChange={(e) => setCardTitle(e.target.value)} />
+                            <input type="submit" value="Aggiorna" />
+                        </form>
+                    }
+
                 </div>
                 {tags.length ? <div>{tags.map((tag, i) => <span key={i} className={setClass(tag_css, tag)}>{tag}</span>)}</div> : <div>Nessun tag </div>}
                 <p className={style.description}>
@@ -69,5 +90,6 @@ export function Card({ title = '', image = '', description = '', tags = [], auth
 
             </div>
         </div>
+
     )
 }
